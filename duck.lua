@@ -194,9 +194,9 @@ function AllowRunServiceBind.OnInvoke(args)
 
     CoreGui:SetCore("SendNotification", {
 
-        Title = "kaymobile",
+        Title = "Duckmobile",
 
-        Text = "By Kay hub",
+        Text = "By Duck hub",
 
         Icon = "rbxthumb://type=Asset&id=18826502436&w=150&h=150",
 
@@ -241,9 +241,9 @@ local CoreGui = game:GetService("StarterGui")
 
 CoreGui:SetCore("SendNotification", {
 
-    Title = "ChestFarm",
+    Title = "DuckChest",
 
-    Text = "By Vhung hub",
+    Text = "By Duck hub",
 
     Icon = "rbxthumb://type=Asset&id=18826502436&w=150&h=150",
 
