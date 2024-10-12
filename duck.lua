@@ -6,8 +6,6 @@ repeat task.wait(4) until game:IsLoaded()
 
 local PlaceID = game.PlaceId
 
-local AllIDs = {}
-
 local foundAnything = ""
 
 local actualHour = os.date("!*t").hour
