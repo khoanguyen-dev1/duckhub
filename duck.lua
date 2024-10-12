@@ -2,7 +2,7 @@ highChestOnly = true
 
 godsChalicSniper = false
 
-repeat task.wait(4) until game:IsLoaded()
+repeat wait(4) until game:IsLoaded()
 
 local PlaceID = game.PlaceId
 
