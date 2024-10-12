@@ -196,7 +196,7 @@ function AllowRunServiceBind.OnInvoke(args)
 
         Title = "Auto Farm Gương",
 
-        Text = "By: Turbo Lite",
+        Text = "By: Duck Hub",
 
         Icon = "rbxthumb://type=Asset&id=18919385616&w=150&h=150",
 
@@ -243,7 +243,7 @@ CoreGui:SetCore("SendNotification", {
 
     Title = "Auto Farm Gương",
 
-    Text = "By: Turbo Lite",
+    Text = "By: Duck Hub",
 
     Icon = "rbxthumb://type=Asset&id=18919385616&w=150&h=150",
 
