@@ -1,4 +1,3 @@
-
 highChestOnly = true
 
 godsChalicSniper = false
