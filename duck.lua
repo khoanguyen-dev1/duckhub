@@ -1,12 +1,13 @@
+
 highChestOnly = true
 
 godsChalicSniper = false
 
-repeat wait() until game:IsLoaded()
+repeat task.wait(4) until game:IsLoaded()
 
 local PlaceID = game.PlaceId
-print("Place ID:", PlaceID)
 
+local AllIDs = {}
 
 local foundAnything = ""
 
@@ -180,11 +181,11 @@ local AllowRunServiceBind = Instance.new("BindableFunction")
 
 function AllowRunServiceBind.OnInvoke(args)
 
-    if args == "Enable" then
+    if args == "Bật" then
 
         AllowRunService = true
 
-    elseif args == "Disable" then
+    elseif args == "Tắt" then
 
         AllowRunService = false
 
@@ -194,19 +195,19 @@ function AllowRunServiceBind.OnInvoke(args)
 
     CoreGui:SetCore("SendNotification", {
 
-        Title = "Duckmobile",
+        Title = "Auto Farm Gương",
 
-        Text = "By Duck hub",
+        Text = "By: Turbo Lite",
 
-        Icon = "rbxthumb://type=Asset&id=18826502436&w=150&h=150",
+        Icon = "rbxthumb://type=Asset&id=18919385616&w=150&h=150",
 
         Duration = math.huge,
 
         Callback = AllowRunServiceBind,
 
-        Button1 = "Enable",
+        Button1 = "Bật",
 
-        Button2 = "Disable",
+        Button2 = "Tắt",
 
     })
 
@@ -241,19 +242,19 @@ local CoreGui = game:GetService("StarterGui")
 
 CoreGui:SetCore("SendNotification", {
 
-    Title = "DuckChest",
+    Title = "Auto Farm Gương",
 
-    Text = "By Duck hub",
+    Text = "By: Turbo Lite",
 
-    Icon = "rbxthumb://type=Asset&id=18826502436&w=150&h=150",
+    Icon = "rbxthumb://type=Asset&id=18919385616&w=150&h=150",
 
     Duration = math.huge,
 
     Callback = AllowRunServiceBind,
 
-    Button1 = "Enable",
+    Button1 = "Bật",
 
-    Button2 = "Disable",
+    Button2 = "Tắt",
 
 })
 
@@ -368,3 +369,5 @@ task.spawn(function()
         end
 
     end
+
+end)
