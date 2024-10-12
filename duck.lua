@@ -2,9 +2,11 @@ highChestOnly = true
 
 godsChalicSniper = false
 
-repeat wait(4) until game:IsLoaded()
+repeat wait() until game:IsLoaded()
 
 local PlaceID = game.PlaceId
+print("Place ID:", PlaceID)
+
 
 local foundAnything = ""
 
