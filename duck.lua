@@ -198,7 +198,7 @@ function AllowRunServiceBind.OnInvoke(args)
 
         Text = "By: Duck Hub",
 
-        Icon = "rbxthumb://type=Asset&id=18919385616&w=150&h=150",
+        Icon = "rbxthumb://type=Asset&id=944258394&w=150&h=150",
 
         Duration = math.huge,
 
@@ -245,7 +245,7 @@ CoreGui:SetCore("SendNotification", {
 
     Text = "By: Duck Hub",
 
-    Icon = "rbxthumb://type=Asset&id=18919385616&w=150&h=150",
+    Icon = "rbxthumb://type=Asset&id=944258394&w=150&h=150",
 
     Duration = math.huge,
 
