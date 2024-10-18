@@ -15,6 +15,7 @@ game.StarterGui:SetCore(
         Icon = "rbxthumb://type=GamePass&id=944258394&w=150&h=150",
         Text = "Đang Tải",
         Duration = 5
+	print("đang tải")	
     })
 
 function PostWebhook(Url, message)
@@ -4510,29 +4511,32 @@ end
 function getNextIsland()
     local TableIslandsRaid = {5, 4, 3, 2, 1}
     for _, v in pairs(TableIslandsRaid) do
-        if IsIslandRaid(v) and (IsIslandRaid(v).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 4500 then
-            return IsIslandRaid(v)
+        local island = IsIslandRaid(v)
+        if island and (island.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 4500 then
+            return island
         end
     end
+    return nil
 end
 
 spawn(function()
     while wait() do
         if _G.Start_Raid then
-            -- Nếu chưa có đảo hiện tại, tìm đảo tiếp theo
             if not currentIsland then
                 currentIsland = getNextIsland()
                 if currentIsland then
-                    -- Teleport đến dưới đảo tiếp theo
-                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = currentIsland.CFrame * CFrame.new(0, -10, 0) -- Điều chỉnh vị trí cho phù hợp
+                    -- Teleport đến trên đảo tiếp theo
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = currentIsland.CFrame * CFrame.new(0, 10, 0) -- 10 là độ cao
                 end
             else
-                -- Kiểm tra xem đảo hiện tại đã hoàn thành chưa (giả sử có điều kiện để xác định)
-                if currentIsland.Parent == nil then
-                    -- Nếu đảo hiện tại đã hoàn thành, tìm đảo tiếp theo
+                -- Kiểm tra xem đảo hiện tại đã hoàn thành chưa
+                if not currentIsland.Parent then -- Hoặc sử dụng điều kiện kiểm tra khác
+                    print("Đảo hiện tại đã hoàn thành, tìm đảo tiếp theo...")
                     currentIsland = getNextIsland()
                     if currentIsland then
-                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = currentIsland.CFrame * CFrame.new(0, -10, 0)
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = currentIsland.CFrame * CFrame.new(0, 10, 0) -- Teleport đến trên đảo tiếp theo
+                    else
+                        print("Không tìm thấy đảo tiếp theo.")
                     end
                 end
             end
@@ -4554,7 +4558,6 @@ spawn(function()
         end
     end
 end)
-
 
 if World2 then
 Tabs.Raid:AddButton({
@@ -4847,6 +4850,7 @@ game.StarterGui:SetCore(
         Title = "Duck Hub",
         Icon = "rbxthumb://type=GamePass&id=944258394&w=150&h=150",
         Text = "Đã Tải Xong",
-        Duration = 1
+        Duration = 1 
+         print("đã load xong")
     })
        
