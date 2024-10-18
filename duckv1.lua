@@ -4483,26 +4483,64 @@ spawn(function()
     end)
 end)
 
-local Toggle = Tabs.Raid:AddToggle("Kill Aura", { Title = "Start Raid", Default = false })
-Toggle:OnChanged(function(Value)
-    getgenv().alo = Value
-    end)
-        spawn(function()
-            while wait() do
-                if getgenv().alo then
-                    for L_570_forvar0, L_571_forvar1 in pairs(game.Workspace.Enemies:GetDescendants()) do
-                        if L_571_forvar1:FindFirstChild("Humanoid") and L_571_forvar1:FindFirstChild("HumanoidRootPart") and L_571_forvar1.Humanoid.Health > 0 then
-                            repeat
-                                wait(.1)
-                                L_571_forvar1.Humanoid.Health = 0
-                                L_571_forvar1.HumanoidRootPart.CanCollide = false
-                                sethiddenproperty(game.Players.LocalPlayer, "SimulationRadius", math.huge)
-                            until not getgenv().alo or not L_571_forvar1.Parent or L_571_forvar1.Humanoid.Health <= 0
-                        end
+local ToggleStartRaid = Tabs.Raid:AddToggle("StartRaid", { Title = "Start Raid", Default = false })
+ToggleStartRaid:OnChanged(function(Value)
+    _G.Start_Raid = Value
+    StopTween(_G.Start_Raid)
+end)
+
+function IsIslandRaid(cu)
+    if game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island " .. cu) then
+        local min = 4500
+        for _, v in pairs(game:GetService("Workspace")["_WorldOrigin"].Locations:GetChildren()) do
+            if v.Name == "Island " .. cu and (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < min then
+                min = (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+            end
+        end
+        for _, v in pairs(game:GetService("Workspace")["_WorldOrigin"].Locations:GetChildren()) do
+            if v.Name == "Island " .. cu and (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= min then
+                return v
+            end
+        end
+    end
+end
+
+function getNextIsland()
+    local TableIslandsRaid = {5, 4, 3, 2, 1}
+    for _, v in pairs(TableIslandsRaid) do
+        if IsIslandRaid(v) and (IsIslandRaid(v).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 4500 then
+            return IsIslandRaid(v)
+        end
+    end
+end
+
+spawn(function()
+    while wait() do
+        if _G.Start_Raid then
+            -- Teleport đến đảo tiếp theo
+            local nextIsland = getNextIsland()
+            if nextIsland then
+                spawn(topos(nextIsland.CFrame * CFrame.new(0, 60, 0)), 1)
+            end
+            
+            -- Kill Aura
+            if game:GetService("Players").LocalPlayer.PlayerGui.Main.Timer.Visible == true then
+                for _, v in pairs(game:GetService("Workspace").Enemies:GetDescendants()) do
+                    if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                        pcall(function()
+                            repeat wait()
+                                sethiddenproperty(game:GetService("Players").LocalPlayer, "SimulationRadius", math.huge)
+                                v.Humanoid.Health = 0
+                                v.HumanoidRootPart.CanCollide = false
+                            until not _G.Start_Raid or not v.Parent or v.Humanoid.Health <= 0
+                        end)
                     end
                 end
             end
-        end)
+        end
+    end
+end)
+
 if World2 then
 Tabs.Raid:AddButton({
     Title = "Teleport To Raid",
