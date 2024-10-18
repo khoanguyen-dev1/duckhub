@@ -4489,6 +4489,8 @@ ToggleStartRaid:OnChanged(function(Value)
     StopTween(_G.Start_Raid)
 end)
 
+local currentIsland = nil -- Biến để lưu đảo hiện tại
+
 function IsIslandRaid(cu)
     if game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island " .. cu) then
         local min = 4500
@@ -4517,10 +4519,22 @@ end
 spawn(function()
     while wait() do
         if _G.Start_Raid then
-            -- Teleport đến đảo tiếp theo
-            local nextIsland = getNextIsland()
-            if nextIsland then
-                spawn(topos(nextIsland.CFrame * CFrame.new(0, 60, 0)), 1)
+            -- Nếu chưa có đảo hiện tại, tìm đảo tiếp theo
+            if not currentIsland then
+                currentIsland = getNextIsland()
+                if currentIsland then
+                    -- Teleport đến dưới đảo tiếp theo
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = currentIsland.CFrame * CFrame.new(0, -10, 0) -- Điều chỉnh vị trí cho phù hợp
+                end
+            else
+                -- Kiểm tra xem đảo hiện tại đã hoàn thành chưa (giả sử có điều kiện để xác định)
+                if currentIsland.Parent == nil then
+                    -- Nếu đảo hiện tại đã hoàn thành, tìm đảo tiếp theo
+                    currentIsland = getNextIsland()
+                    if currentIsland then
+                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = currentIsland.CFrame * CFrame.new(0, -10, 0)
+                    end
+                end
             end
             
             -- Kill Aura
@@ -4540,6 +4554,7 @@ spawn(function()
         end
     end
 end)
+
 
 if World2 then
 Tabs.Raid:AddButton({
