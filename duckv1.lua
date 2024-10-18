@@ -4850,6 +4850,9 @@ game.StarterGui:SetCore(
         Icon = "rbxthumb://type=GamePass&id=944258394&w=150&h=150",
         Text = "Đã Tải Xong",
         Duration = 1 
-    })
+    }
+)
+
 print("đã load xong")
+
        
