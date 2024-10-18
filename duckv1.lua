@@ -14,10 +14,9 @@ game.StarterGui:SetCore(
         Title = "Duck hub",
         Icon = "rbxthumb://type=GamePass&id=944258394&w=150&h=150",
         Text = "Đang Tải",
-        Duration = 5
-	print("đang tải")	
+        Duration = 5	
     })
-
+print("đang tải")
 function PostWebhook(Url, message)
     local request = http_request or request or HttpPost or syn.request
     local data =
@@ -4851,6 +4850,6 @@ game.StarterGui:SetCore(
         Icon = "rbxthumb://type=GamePass&id=944258394&w=150&h=150",
         Text = "Đã Tải Xong",
         Duration = 1 
-         print("đã load xong")
     })
+print("đã load xong")
        
