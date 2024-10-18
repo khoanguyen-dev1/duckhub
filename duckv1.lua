@@ -4380,35 +4380,53 @@ end)
 
 --Deo Muon Lam Aim Nhung Bang Cach Than Ki Nao Do Fast Attack Deo Pha Noi Ken 🤣
                      ------------Tab Raid Và Random Fruit Và Tele Fruit---------                       
-local Dropdown = Tabs.Raid:AddDropdown("DropdownFarm", {
-    Title = "Select Chip Raid",
-    Values = {"Flame","Ice","Quake","Light","Dark","Spider","Rumble","Magma","Buddha","Sand","Phoenix","Dough"},
-    Multi = false,
-})
-
-Dropdown:SetValue("Flame")
-Dropdown:OnChanged(function(Value)
-    SelectChip = Value
-end)
-
-local Toggle = Tabs.Raid:AddToggle("Auto Buy Chip", { Title = "Auto Buy Chip", Default = false })
-Toggle:OnChanged(function(Value)
-    _G.BuyChipRaid = Value
-end)
-spawn(function()
-    while wait() do
-		if _G.BuyChipRaid then
-			pcall(function()
-				local args = {
-					[1] = "RaidsNpc",
-					[2] = "Select",
-					[3] = SelectChip
-				}
-				game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-			end)
-        end
-    end
-end)
+                     local Dropdown = Tabs.Raid:AddDropdown("DropdownFarm", {
+                        Title = "Select Chip Raid",
+                        Values = {"Flame","Ice","Quake","Light","Dark","Spider","Rumble","Magma","Buddha","Sand","Phoenix","Dough"},
+                        Multi = false,
+                    })
+                    
+                    Dropdown:SetValue("Flame")
+                    Dropdown:OnChanged(function(Value)
+                        SelectChip = Value
+                    end)
+                    
+                    local Toggle = Tabs.Raid:AddToggle("Auto Buy Chip", { Title = "Auto Buy Chip", Default = false })
+                    Toggle:OnChanged(function(Value)
+                        _G.BuyChipRaid = Value
+                    end)
+                    
+                    spawn(function()
+                        while wait() do
+                            if _G.BuyChipRaid then
+                                local success, err = pcall(function()
+                                    local args = {
+                                        [1] = "RaidsNpc",
+                                        [2] = "Select",
+                                        [3] = SelectChip
+                                    }
+                                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                                end)
+                    
+                                if success then
+                                    -- Kích hoạt chip sau khi mua thành công
+                                    activateChip(SelectChip) -- Gọi hàm kích hoạt chip
+                                else
+                                    print("Error buying chip: " .. err) -- Thông báo lỗi nếu có
+                                end
+                            end
+                        end
+                    end)
+                    
+                    function activateChip(chipName)
+                        -- Thực hiện các bước để kích hoạt chip
+                        local activateArgs = {
+                            [1] = "ActivateChip",
+                            [2] = chipName
+                        }
+                        game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(activateArgs))
+                        print(chipName .. " activated!") -- Thông báo chip đã được kích hoạt
+                    end
 
 local ToggleRaid = Tabs.Raid:AddToggle("Toggle Raid", { Title = "Start/Stop Raid", Default = false })
 
