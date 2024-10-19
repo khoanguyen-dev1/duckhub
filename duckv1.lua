@@ -4380,146 +4380,141 @@ end)
 
 --Deo Muon Lam Aim Nhung Bang Cach Than Ki Nao Do Fast Attack Deo Pha Noi Ken 🤣
                      ------------Tab Raid Và Random Fruit Và Tele Fruit---------                       
-                     local Dropdown = Tabs.Raid:AddDropdown("DropdownFarm", {
-                        Title = "Select Chip Raid",
-                        Values = {"Flame","Ice","Quake","Light","Dark","Spider","Rumble","Magma","Buddha","Sand","Phoenix","Dough"},
-                        Multi = false,
-                    })
-                    
-                    Dropdown:SetValue("Flame")
-                    Dropdown:OnChanged(function(Value)
-                        SelectChip = Value
-                    end)
-                    
-                    local Toggle = Tabs.Raid:AddToggle("Auto Buy Chip", { Title = "Auto Buy Chip", Default = false })
-                    Toggle:OnChanged(function(Value)
-                        _G.BuyChipRaid = Value
-                    end)
-                    
-                    spawn(function()
-                        while wait() do
-                            if _G.BuyChipRaid then
-                                local success, err = pcall(function()
-                                    local args = {
-                                        [1] = "RaidsNpc",
-                                        [2] = "Select",
-                                        [3] = SelectChip
-                                    }
-                                    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                                end)
-                    
-                                if success then
-                                    -- Kích hoạt chip sau khi mua thành công
-                                    activateChip(SelectChip) -- Gọi hàm kích hoạt chip
-                                else
-                                    print("Error buying chip: " .. err) -- Thông báo lỗi nếu có
-                                end
-                            end
-                        end
-                    end)
-                    
-                    function activateChip(chipName)
-                        -- Thực hiện các bước để kích hoạt chip
-                        local activateArgs = {
-                            [1] = "ActivateChip",
-                            [2] = chipName
- }
-game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(activateArgs))
-print(chipName .. " activated!") -- Thông báo chip đã được kích hoạt
-end
-
-local ToggleRaid = Tabs.Raid:AddToggle("Toggle Raid", { Title = "Start/Stop Raid", Default = false })
-
-ToggleRaid:OnChanged(function(Value)
-    _G.Auto_Dungeon = Value
-    StopTween(_G.Auto_Dungeon)
-
-    if Value then
-        _G.Kill_Aura = true -- Tự động kích hoạt Kill Aura khi bắt đầu raid
-        spawn(function()
-            if getNextIsland() then
-                wait(5) -- Chờ 5 giây trước khi bắt đầu hoạt động
-            end
-            
-            while _G.Auto_Dungeon do
-                local nextIsland = getNextIsland()
-                if nextIsland then
-                    spawn(topos(nextIsland.CFrame * CFrame.new(0, 60, 0)), 1)
-
-                    -- Dừng lại cho đến khi đến đảo mới
-                    while _G.Auto_Dungeon and getNextIsland() == nextIsland do
-                        wait() -- Chờ cho đến khi đảo tiếp theo được xác định
-                    end
-                else
-                    _G.Auto_Dungeon = false -- Dừng nếu không có đảo nào
-                end
-                wait(1) -- Thời gian chờ trước khi kiểm tra lại
-            end
-        end)
-    else
-        _G.Kill_Aura = false -- Tắt Kill Aura khi dừng raid
-    end
-end)
-
-local ToggleNextIsland = Tabs.Raid:AddToggle("ToggleNextIsland", { Title = "Next Island", Default = false })
-ToggleNextIsland:OnChanged(function(Value)
-    _G.Auto_Dungeon = Value
-    StopTween(_G.Auto_Dungeon)
-end)
-Options.ToggleNextIsland:SetValue(false)
-
-function IsIslandRaid(cu)
-    if game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island " .. cu) then
-        local min = 4500
-        for r, v in pairs(game:GetService("Workspace")["_WorldOrigin"].Locations:GetChildren()) do
-            if v.Name == "Island " .. cu and (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < min then
-                min = (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
-            end
-        end
-        for r, v in pairs(game:GetService("Workspace")["_WorldOrigin"].Locations:GetChildren()) do
-            if v.Name == "Island " .. cu and (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= min then
-                return v
-            end
-        end
-    end
-end
-
-function getNextIsland()
-    local TableIslandsRaid = {5, 4, 3, 2, 1}
-    for r, v in pairs(TableIslandsRaid) do
-        if IsIslandRaid(v) and (IsIslandRaid(v).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 4500 then
-            return IsIslandRaid(v)
-        end
-    end
-end
-
-local Toggle = Tabs.Raid:AddToggle("Kill Aura", { Title = "Kill Aura", Default = false })
+local Toggle = Tabs.Raid:AddToggle("Auto Buy Chip", { Title = "Auto Buy Chip", Default = false })
 Toggle:OnChanged(function(Value)
-    _G.Kill_Aura = Value
+ _G.BuyChipRaid = Value
 end)
-
 spawn(function()
-    pcall(function() 
-        while wait() do
-            if _G.Kill_Aura then
-                if game:GetService("Players")["LocalPlayer"].PlayerGui.Main.Timer.Visible then
-                    for i,v in pairs(game:GetService("Workspace").Enemies:GetDescendants()) do
-                        if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
-                            pcall(function()
-                                repeat wait()
-                                    sethiddenproperty(game:GetService("Players").LocalPlayer, "SimulationRadius", math.huge)
-                                    v.Humanoid.Health = 0
-                                    v.HumanoidRootPart.CanCollide = false
-                                until not _G.Kill_Aura or not v.Parent or v.Humanoid.Health <= 0
-                            end)
-                        end
-                    end
-                end
-            end
-        end
-    end)
-end)
-
+    while wait() do
+    if _G.BuyChipRaid then
+    pcall(function()
+    local args = {
+    [1] = "RaidsNpc",
+    [2] = "Select",
+    [3] = SelectChip
+    }
+    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+                                 end)
+                             end
+                         end
+                     end)
+                     local ToggleRaid = Tabs.Raid:AddToggle("Toggle Raid", { Title = "Bắt đầu/Dừng Raid", Default = false })
+                     ToggleRaid:OnChanged(function(Value)
+                         _G.Auto_Dungeon = Value
+                         StopTween(_G.Auto_Dungeon)
+                     
+                         if Value then
+                             _G.Kill_Aura = true -- Tự động kích hoạt Kill Aura khi bắt đầu raid
+                             spawn(function()
+                                 if getNextIsland() then
+                                     wait(10) -- Chờ 5 giây trước khi bắt đầu hoạt động
+                                 end
+                                 
+                                 while _G.Auto_Dungeon do
+                                     local nextIsland = getNextIsland()
+                                     if nextIsland then
+                                         spawn(topos(nextIsland.CFrame * CFrame.new(0, 60, 0)), 1)
+                     
+                                         -- Dừng lại cho đến khi đến đảo mới
+                                         while _G.Auto_Dungeon and getNextIsland() == nextIsland do
+                                             wait() -- Chờ cho đến khi đảo tiếp theo được xác định
+                                         end
+                                     else
+                                         _G.Auto_Dungeon = false -- Dừng nếu không có đảo nào
+                                     end
+                                     wait(1) -- Thời gian chờ trước khi kiểm tra lại
+                                 end
+                             end)
+                         else
+                             _G.Kill_Aura = false -- Tắt Kill Aura khi dừng raid
+                         end
+                     end)
+                     
+                     local ToggleNextIsland = Tabs.Raid:AddToggle("ToggleNextIsland", { Title = "Đảo Tiếp Theo", Default = false })
+                     ToggleNextIsland:OnChanged(function(Value)
+                         _G.Auto_Dungeon = Value
+                         StopTween(_G.Auto_Dungeon)
+                     end)
+                     
+                     function IsIslandRaid(cu)
+                         if game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island " .. cu) then
+                             local min = 4500
+                             for r, v in pairs(game:GetService("Workspace")["_WorldOrigin"].Locations:GetChildren()) do
+                                 if v.Name == "Island " .. cu and (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < min then
+                                     min = (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude
+                                 end
+                             end
+                             for r, v in pairs(game:GetService("Workspace")["_WorldOrigin"].Locations:GetChildren()) do
+                                 if v.Name == "Island " .. cu and (v.Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= min then
+                                     return v
+                                 end
+                             end
+                         end
+                     end
+                     
+                     function getNextIsland()
+                         local TableIslandsRaid = {5, 4, 3, 2, 1}
+                         for r, v in pairs(TableIslandsRaid) do
+                             if IsIslandRaid(v) and (IsIslandRaid(v).Position - game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude <= 4500 then
+                                 return IsIslandRaid(v)
+                             end
+                         end
+                     end
+                     
+                     local ToggleKillAura = Tabs.Raid:AddToggle("Kill Aura", { Title = "Kill Aura", Default = false })
+                     ToggleKillAura:OnChanged(function(Value)
+                         _G.Kill_Aura = Value
+                     end)
+                     
+                     spawn(function()
+                         pcall(function() 
+                             while wait() do
+                                 if _G.Kill_Aura then
+                                     if game:GetService("Players")["LocalPlayer"].PlayerGui.Main.Timer.Visible then
+                                         for i, v in pairs(game:GetService("Workspace").Enemies:GetDescendants()) do
+                                             if v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                                                 pcall(function()
+                                                     repeat wait()
+                                                         sethiddenproperty(game:GetService("Players").LocalPlayer, "SimulationRadius", math.huge)
+                                                         v.Humanoid.Health = 0
+                                                         v.HumanoidRootPart.CanCollide = false
+                                                     until not _G.Kill_Aura or not v.Parent or v.Humanoid.Health <= 0
+                                                 end)
+                                             end
+                                         end
+                                     end
+                                 end
+                             end
+                         end)
+                     end)
+                     
+                     -- Logic tự động bắt đầu raid
+                     local ToggleAutoStart = Tabs.Raid:AddToggle("ToggleAutoStart", { Title = "Bắt đầu Raid", Default = false })
+                     ToggleAutoStart:OnChanged(function(Value)
+                         _G.Auto_StartRaid = Value
+                     end)
+                     
+                     spawn(function()
+                         while wait(0.1) do
+                             pcall(function()
+                                 if _G.Auto_StartRaid then
+                                     if game:GetService("Players")["LocalPlayer"].PlayerGui.Main.Timer.Visible == false then
+                                         if not game:GetService("Workspace")["_WorldOrigin"].Locations:FindFirstChild("Island 1") and 
+                                            (game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Special Microchip") or 
+                                             game:GetService("Players").LocalPlayer.Character:FindFirstChild("Special Microchip")) then
+                                             if World2 then
+                                                 fireclickdetector(game:GetService("Workspace").Map.CircleIsland.RaidSummon2.Button.Main.ClickDetector)
+                                             elseif World3 then
+                                                 fireclickdetector(game:GetService("Workspace").Map["Boat Castle"].RaidSummon2.Button.Main.ClickDetector)
+                                             end
+                                         end
+                                     end
+                                 end
+                             end)
+                         end
+                     end)
+                     
+                     
 if World2 then
 Tabs.Raid:AddButton({
     Title = "Teleport To Raid",
