@@ -4418,7 +4418,7 @@ end)
         _G.Kill_Aura = true -- Tự động kích hoạt Kill Aura khi bắt đầu raid
         spawn(function()
             if getNextIsland() then
-                wait(20) -- Chờ 10 giây trước khi bắt đầu hoạt động
+                wait(1) -- Chờ 10 giây trước khi bắt đầu hoạt động
             end
             
             -- Logic tự động bắt đầu raid
