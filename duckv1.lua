@@ -4409,7 +4409,7 @@ spawn(function()
         end
     end
 end)
-                     local ToggleRaid = Tabs.Raid:AddToggle("Toggle Raid", { Title = "Bắt đầu/Dừng Raid", Default = false })
+                   local ToggleRaid = Tabs.Raid:AddToggle("Toggle Raid", { Title = "Bắt đầu/Dừng Raid", Default = false })
                      ToggleRaid:OnChanged(function(Value)
     _G.Auto_Dungeon = Value
     StopTween(_G.Auto_Dungeon)
@@ -4418,7 +4418,7 @@ end)
         _G.Kill_Aura = true -- Tự động kích hoạt Kill Aura khi bắt đầu raid
         spawn(function()
             if getNextIsland() then
-                wait(30) -- Chờ 10 giây trước khi bắt đầu hoạt động
+                wait(10) -- Chờ 10 giây trước khi bắt đầu hoạt động
             end
             
             -- Logic tự động bắt đầu raid
@@ -4528,7 +4528,6 @@ end)
                              end)
                          end
                      end)
-                     
                      
 if World2 then
 Tabs.Raid:AddButton({
