@@ -4380,24 +4380,35 @@ end)
 
 --Deo Muon Lam Aim Nhung Bang Cach Than Ki Nao Do Fast Attack Deo Pha Noi Ken 🤣
                      ------------Tab Raid Và Random Fruit Và Tele Fruit---------                       
+local Dropdown = Tabs.Raid:AddDropdown("DropdownFarm", {
+    Title = "Select Chip Raid",
+    Values = {"Flame","Ice","Quake","Light","Dark","Spider","Rumble","Magma","Buddha","Sand","Phoenix","Dough"},
+    Multi = false,
+})
+
+Dropdown:SetValue("Flame")
+Dropdown:OnChanged(function(Value)
+    SelectChip = Value
+end)
+
 local Toggle = Tabs.Raid:AddToggle("Auto Buy Chip", { Title = "Auto Buy Chip", Default = false })
 Toggle:OnChanged(function(Value)
- _G.BuyChipRaid = Value
+    _G.BuyChipRaid = Value
 end)
 spawn(function()
     while wait() do
-    if _G.BuyChipRaid then
-    pcall(function()
-    local args = {
-    [1] = "RaidsNpc",
-    [2] = "Select",
-    [3] = SelectChip
-    }
-    game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
-                                 end)
-                             end
-                         end
-                     end)
+		if _G.BuyChipRaid then
+			pcall(function()
+				local args = {
+					[1] = "RaidsNpc",
+					[2] = "Select",
+					[3] = SelectChip
+				}
+				game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer(unpack(args))
+			end)
+        end
+    end
+end)
                      local ToggleRaid = Tabs.Raid:AddToggle("Toggle Raid", { Title = "Bắt đầu/Dừng Raid", Default = false })
                      ToggleRaid:OnChanged(function(Value)
                          _G.Auto_Dungeon = Value
