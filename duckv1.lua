@@ -4411,35 +4411,39 @@ spawn(function()
 end)
                      local ToggleRaid = Tabs.Raid:AddToggle("Toggle Raid", { Title = "Bắt đầu/Dừng Raid", Default = false })
                      ToggleRaid:OnChanged(function(Value)
-                         _G.Auto_Dungeon = Value
-                         StopTween(_G.Auto_Dungeon)
-                     
-                         if Value then
-                             _G.Kill_Aura = true -- Tự động kích hoạt Kill Aura khi bắt đầu raid
-                             spawn(function()
-                                 if getNextIsland() then
-                                     wait(10) -- Chờ 5 giây trước khi bắt đầu hoạt động
-                                 end
-                                 
-                                 while _G.Auto_Dungeon do
-                                     local nextIsland = getNextIsland()
-                                     if nextIsland then
-                                         spawn(topos(nextIsland.CFrame * CFrame.new(0, 60, 0)), 1)
-                     
-                                         -- Dừng lại cho đến khi đến đảo mới
-                                         while _G.Auto_Dungeon and getNextIsland() == nextIsland do
-                                             wait() -- Chờ cho đến khi đảo tiếp theo được xác định
-                                         end
-                                     else
-                                         _G.Auto_Dungeon = false -- Dừng nếu không có đảo nào
-                                     end
-                                     wait(1) -- Thời gian chờ trước khi kiểm tra lại
-                                 end
-                             end)
-                         else
-                             _G.Kill_Aura = false -- Tắt Kill Aura khi dừng raid
-                         end
-                     end)
+    _G.Auto_Dungeon = Value
+    StopTween(_G.Auto_Dungeon)
+
+    if Value then
+        _G.Kill_Aura = true -- Tự động kích hoạt Kill Aura khi bắt đầu raid
+        spawn(function()
+            if getNextIsland() then
+                wait(10) -- Chờ 10 giây trước khi bắt đầu hoạt động
+            end
+            
+            -- Logic tự động bắt đầu raid
+            _G.Auto_StartRaid = true -- Bắt đầu tự động raid
+
+            while _G.Auto_Dungeon do
+                local nextIsland = getNextIsland()
+                if nextIsland then
+                    spawn(topos(nextIsland.CFrame * CFrame.new(0, 60, 0)), 1)
+
+                    -- Dừng lại cho đến khi đến đảo mới
+                    while _G.Auto_Dungeon and getNextIsland() == nextIsland do
+                        wait() -- Chờ cho đến khi đảo tiếp theo được xác định
+                    end
+                else
+                    _G.Auto_Dungeon = false -- Dừng nếu không có đảo nào
+                end
+                wait(1) -- Thời gian chờ trước khi kiểm tra lại
+            end
+        end)
+    else
+        _G.Kill_Aura = false -- Tắt Kill Aura khi dừng raid
+        _G.Auto_StartRaid = false -- Dừng tự động raid
+    end
+end)
                      
                      local ToggleNextIsland = Tabs.Raid:AddToggle("ToggleNextIsland", { Title = "Đảo Tiếp Theo", Default = false })
                      ToggleNextIsland:OnChanged(function(Value)
