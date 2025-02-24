@@ -205,17 +205,6 @@ FASTAT:OnChanged(function(value)
                 Duration = 5
             }
         )
-
-        -- Start the attack loop in a separate thread
-        task.spawn(function()
-            while _G.FastAttack do  -- Continue looping as long as Fast Attack is ON
-                if Settings.AutoClick then
-                    -- Ensure the function doesn't keep executing when Fast Attack is off
-                    FastAttack:BladeHits()
-                end
-                task.wait(Settings.ClickDelay)  -- Wait before next attack
-            end
-        end)
     else
         -- Runs when Fast Attack is disabled
         print("Fast Attack Disabled")
