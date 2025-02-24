@@ -1,6 +1,6 @@
 -- Execute the script from the URL
 loadstring(game:HttpGet("https://pastefy.app/kTvdratR/raw"))()
-
+print("run r")
 -- Set the value for _G.NuocLon
 _G.NuocLon = true  -- You can change this to true or false depending on your need
 
