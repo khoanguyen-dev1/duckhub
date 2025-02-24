@@ -157,7 +157,7 @@ hookfunction(require(game:GetService("ReplicatedStorage").Effect.Container.Death
 hookfunction(require(game:GetService("ReplicatedStorage").Effect.Container.Respawn), function()end)
 
 -- Add Fast Attack functionality
-local FASTAT = Tabs.Main:AddToggle("Fast_Attack", {Title = "Fast Attack", Default = true })
+local FASTAT = Tabs.infor:AddToggle("Fast_Attack", {Title = "Fast Attack", Default = true })
 
 FASTAT:OnChanged(function(value)
     if value then
